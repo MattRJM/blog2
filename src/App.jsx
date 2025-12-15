@@ -64,7 +64,7 @@ function AppContent() {
           textAlign: "center",
         }}
       >
-        <h1>Blog Social</h1>
+        <h1>Twitter da China</h1>
         <div style={{ display: "flex", gap: 40, marginTop: 40 }}>
           <div style={{ flex: 1 }}>
             <LoginForm />
