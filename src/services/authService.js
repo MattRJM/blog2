@@ -83,7 +83,7 @@ export const createUserInFirestore = async (user) => {
 };
 
 /**
- * Obtém dados do usuário logado
+ * Obtém dados do usuário logado test
  */
 export const getCurrentUserData = async (userId) => {
   if (!userId) return null;
