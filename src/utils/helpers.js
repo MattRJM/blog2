@@ -236,4 +236,4 @@ export const globalStyles = `
   .fade-in { animation: fadeIn 0.3s ease-in-out; }
   .scale-in { animation: scaleIn 0.3s ease-in-out; }
   .slide-in { animation: slideIn 0.3s ease-in-out; }
-`;
+// `

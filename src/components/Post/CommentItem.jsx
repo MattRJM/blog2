@@ -9,24 +9,37 @@ export default function CommentItem({
   onAuthorClick,
 }) {
   const handleAuthorClick = async () => {
-  try {
-    // ✅ Buscar dados completos do autor
-    const userRef = doc(db, "users", comment.authorId);
-    const userSnap = await getDoc(userRef);
+    try {
+      // ✅ Fetch full author data
+      const userRef = doc(db, "users", comment.authorId);
+      const userSnap = await getDoc(userRef);
 
-    if (userSnap.exists()) {
-      const userData = userSnap.data();
-      onAuthorClick?.({
-        uid: comment.authorId,
-        name: userData.name || comment.author,
-        email: userData.email || "",
-        photoURL: userData.photoURL || comment.authorPhoto,
-        about: userData.about || "",
-        subscribers: userData.subscribers || [],
-        createdAt: userData.createdAt || null,  // ← NOVO: Passar createdAt
-      });
-    } else {
-      // Fallback
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        onAuthorClick?.({
+          uid: comment.authorId,
+          name: userData.name || comment.author,
+          email: userData.email || "",
+          photoURL: userData.photoURL || comment.authorPhoto,
+          about: userData.about || "",
+          subscribers: userData.subscribers || [],
+          createdAt: userData.createdAt || null, // ← NEW: Pass createdAt
+        });
+      } else {
+        // Fallback
+        onAuthorClick?.({
+          uid: comment.authorId,
+          name: comment.author,
+          email: "",
+          photoURL: comment.authorPhoto,
+          about: "",
+          subscribers: [],
+          createdAt: null, // ← NEW
+        });
+      }
+    } catch (err) {
+      console.error("Error fetching profile:", err);
+      // Open with available data
       onAuthorClick?.({
         uid: comment.authorId,
         name: comment.author,
@@ -34,24 +47,10 @@ export default function CommentItem({
         photoURL: comment.authorPhoto,
         about: "",
         subscribers: [],
-        createdAt: null,  // ← NOVO
+        createdAt: null, // ← NEW
       });
     }
-  } catch (err) {
-    console.error("Erro ao buscar perfil:", err);
-    // Abrir com dados disponíveis
-    onAuthorClick?.({
-      uid: comment.authorId,
-      name: comment.author,
-      email: "",
-      photoURL: comment.authorPhoto,
-      about: "",
-      subscribers: [],
-      createdAt: null,  // ← NOVO
-    });
-  }
-};
-
+  };
 
   return (
     <div
@@ -65,7 +64,7 @@ export default function CommentItem({
       <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
         {generateAvatar(comment.author, comment.authorPhoto, 32)}
         <div style={{ flex: 1 }}>
-          {/* ✅ Nome clicável - busca perfil completo */}
+          {/* ✅ Clickable name - fetch full profile */}
           <strong
             onClick={handleAuthorClick}
             style={{
@@ -77,14 +76,14 @@ export default function CommentItem({
             {comment.author}
           </strong>
 
-          {/* Email e data (se tiver) */}
+          {/* Email and date (if any) */}
           <div style={{ fontSize: 11, color: "#999", marginTop: 2 }}>
             {comment.createdAt && (
               <div>
                 {new Date(
                   comment.createdAt?.seconds * 1000 ||
                     comment.createdAt
-                ).toLocaleDateString("pt-BR")}
+                ).toLocaleDateString("en-US")}
               </div>
             )}
           </div>

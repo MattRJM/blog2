@@ -142,14 +142,14 @@ export const toggleSubscribe = async (
       toUserId: profileUserId,
       fromUserId: currentUserId,
       type: isCurrentlySubscribed ? "unfollow" : "follow",
-      text: `${currentUserName || "Alguém"} ${
-        isCurrentlySubscribed ? "deixou de seguir" : "começou a seguir"
-      } você`,
+      text: `${currentUserName || "Someone"} ${
+        isCurrentlySubscribed ? "stopped following" : "started following"
+      } you`,
     });
 
     return newSubscribers;
   } catch (error) {
-    console.error("Erro ao toggle subscribe:", error);
+    console.error("Error:", error);
     throw error;
   }
 };

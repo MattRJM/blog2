@@ -16,7 +16,7 @@ export default function MessageThread({
   const [actualConversationId, setActualConversationId] = useState(conversationId);
   const [userNameDisplay, setUserNameDisplay] = useState(otherUserName);
 
-  // ✅ Buscar nome do usuário (separado)
+  // ✅ Fetch user name (separately)
   useEffect(() => {
     if (!otherUserId) return;
 
@@ -34,7 +34,7 @@ export default function MessageThread({
 
         return () => unsub();
       } catch (err) {
-        console.error("Erro ao buscar nome:", err);
+        console.error("Error fetching name:", err);
         setUserNameDisplay(otherUserId);
       }
     };
@@ -42,7 +42,7 @@ export default function MessageThread({
     fetchUserName();
   }, [otherUserId]);
 
-  // ✅ Se conversationId for null, criar nova conversa
+  // ✅ If conversationId is null, create new conversation
   useEffect(() => {
     if (conversationId) {
       setActualConversationId(conversationId);
@@ -50,17 +50,17 @@ export default function MessageThread({
       return;
     }
 
-    // Criar nova conversa se não existir
+    // Create new conversation if it doesn't exist
     const createConversation = async () => {
       try {
-        // ✅ PRIMEIRO: Buscar conversa existente (SEM WHERE)
+        // ✅ FIRST: Search for existing conversation (WITHOUT WHERE)
         const conversationsRef = collection(db, "conversations");
         const querySnapshot = await getDocs(conversationsRef);
 
         let existingConversation = null;
         querySnapshot.forEach((doc) => {
           const members = doc.data().members || [];
-          // Verificar se tem EXATAMENTE esses 2 usuários
+          // Check if it has EXACTLY these 2 users
           const hasCurrentUser = members.includes(currentUserId);
           const hasOtherUser = members.includes(otherUserId);
           const onlyTwoMembers = members.length === 2;
@@ -70,16 +70,16 @@ export default function MessageThread({
           }
         });
 
-        // ✅ Se conversa existe, usar ela
+        // ✅ If conversation exists, use it
         if (existingConversation) {
           setActualConversationId(existingConversation);
-          console.log("Conversa existente encontrada:", existingConversation);
+          console.log("Existing conversation found:", existingConversation);
           setLoading(false);
           return;
         }
 
-        // ✅ Se não existe, criar nova
-        // Criar documento de conversa
+        // ✅ If it doesn't exist, create new one
+        // Create conversation document
         const newConvRef = await addDoc(collection(db, "conversations"), {
           members: [currentUserId, otherUserId],
           createdAt: serverTimestamp(),
@@ -89,9 +89,9 @@ export default function MessageThread({
 
         setActualConversationId(newConvRef.id);
         setLoading(false);
-        console.log("Nova conversa criada:", newConvRef.id);
+        console.log("New conversation created:", newConvRef.id);
       } catch (err) {
-        console.error("Erro ao criar conversa:", err);
+        console.error("Error creating conversation:", err);
         setLoading(false);
       }
     };
@@ -99,7 +99,7 @@ export default function MessageThread({
     createConversation();
   }, [conversationId, currentUserId, otherUserId]);
 
-  // ✅ LISTENER em tempo real para mensagens
+  // ✅ REAL-TIME listener for messages
   useEffect(() => {
     if (!actualConversationId) return;
 
@@ -115,7 +115,7 @@ export default function MessageThread({
         });
       });
 
-      // ✅ Ordenar por timestamp
+      // ✅ Sort by timestamp
       msgs.sort((a, b) => {
         const timeA = a.timestamp?.toDate?.() || new Date(0);
         const timeB = b.timestamp?.toDate?.() || new Date(0);
@@ -124,7 +124,7 @@ export default function MessageThread({
 
       setMessages(msgs);
 
-      // ✅ Scroll para baixo
+      // ✅ Scroll to bottom
       setTimeout(() => {
         const messagesDiv = document.getElementById("messages-container");
         if (messagesDiv) {
@@ -143,7 +143,7 @@ export default function MessageThread({
     setInputValue("");
 
     try {
-      // ✅ Adicionar mensagem na subcoleção
+      // ✅ Add message to subcollection
       const messagesRef = collection(db, "conversations", actualConversationId, "messages");
       await addDoc(messagesRef, {
         sender: currentUserId,
@@ -151,17 +151,17 @@ export default function MessageThread({
         timestamp: serverTimestamp(),
       });
 
-      // ✅ Atualizar última mensagem na conversa
+      // ✅ Update last message in conversation
       const convRef = doc(db, "conversations", actualConversationId);
       await updateDoc(convRef, {
         lastMessage: messageText,
         lastMessageTime: serverTimestamp(),
       });
 
-      console.log("Mensagem enviada com sucesso!");
+      console.log("Message sent successfully!");
     } catch (err) {
-      console.error("Erro ao enviar mensagem:", err);
-      alert("Erro ao enviar mensagem");
+      console.error("Error sending message:", err);
+      alert("Error sending message");
     }
   };
 
@@ -191,7 +191,7 @@ export default function MessageThread({
         }}
       >
         <div style={{ padding: 12, textAlign: "center", color: "#999" }}>
-          Carregando chat...
+          Loading chat...
         </div>
       </div>
     );
@@ -259,7 +259,7 @@ export default function MessageThread({
       >
         {messages.length === 0 ? (
           <div style={{ color: "#999", fontSize: 12, textAlign: "center", margin: "auto" }}>
-            Nenhuma mensagem ainda. Comece a conversa! 👋
+            No messages yet. Start the conversation! 👋
           </div>
         ) : (
           messages.map((msg) => {
@@ -310,7 +310,7 @@ export default function MessageThread({
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyPress={handleKeyPress}
-          placeholder="Digite uma mensagem..."
+          placeholder="Type a message..."
           style={{
             flex: 1,
             padding: 8,
@@ -333,7 +333,7 @@ export default function MessageThread({
             cursor: inputValue.trim() ? "pointer" : "not-allowed",
           }}
         >
-          Enviar
+          Send
         </button>
       </div>
     </div>

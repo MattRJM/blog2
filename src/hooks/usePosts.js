@@ -101,13 +101,13 @@ export function usePosts(authorId = null, limit = 50) {
         q,
         fetchPostsWithAuthorData,
         (err) => {
-          console.error("Erro ao carregar posts:", err);
+          console.error("Error:", err);
           setError(err.message);
           setLoading(false);
         }
       );
     } catch (err) {
-      console.error("Erro ao configurar listener:", err);
+      console.error("Error:", err);
       setError(err.message);
       setLoading(false);
     }

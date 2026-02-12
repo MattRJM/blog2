@@ -100,7 +100,7 @@ export const useAuth = () => {
   };
 
 const displayName =
-    currentUserData?.name || user?.email || "Usuário";
+    currentUserData?.name || user?.email || "User";
   
   return {
     user,

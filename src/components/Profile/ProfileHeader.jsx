@@ -18,7 +18,7 @@ export default function ProfileHeader({
   const [isLoading, setIsLoading] = useState(false);
   const [profileData, setProfileData] = useState(profile);
 
-  // ✅ LISTENER em tempo real para dados do perfil (FORA do if!)
+  // Real-time listener for profile data
   useEffect(() => {
     if (!profileData?.uid) return;
 
@@ -29,7 +29,6 @@ export default function ProfileHeader({
           uid: profileData.uid,
           ...snapshot.data(),
         });
-        // Atualizar isSubscribed se mudar
         setIsSubscribed(
           snapshot.data().subscribers?.includes(currentUserId) || false
         );
@@ -40,18 +39,17 @@ export default function ProfileHeader({
   }, [profileData?.uid, currentUserId]);
 
   if (!profileData)
-    return <div style={{ padding: 20 }}>Carregando perfil...</div>;
+    return <div style={{ padding: 20 }}>Loading profile...</div>;
 
   const profileId = profileData.id || profileData.uid || profileData.authorId;
 
-  // ✅ Contar posts usando o profileId correto
   const postCount = posts?.filter((p) => p.authorId === profileId)?.length || 0;
   const subscribersCount = profileData.subscribers?.length || 0;
 
   const handleSubscribe = async () => {
     if (!currentUserId || !profileId) {
-      console.error("Dados faltando:", { currentUserId, profileId, profileData });
-      alert("Erro: dados do usuário faltando - ID: " + profileId);
+      console.error("Missing data:", { currentUserId, profileId, profileData });
+      alert("Error: missing user data - ID: " + profileId);
       return;
     }
 
@@ -62,7 +60,7 @@ export default function ProfileHeader({
       const userSnap = await getDoc(userRef);
 
       if (!userSnap.exists()) {
-        console.error("Usuário atual não encontrado");
+        console.error("Current user not found");
         setIsLoading(false);
         return;
       }
@@ -73,7 +71,7 @@ export default function ProfileHeader({
       const profileSnap = await getDoc(profileRef);
 
       if (!profileSnap.exists()) {
-        console.error("Perfil não encontrado em:", profileId);
+        console.error("Profile not found at:", profileId);
         setIsLoading(false);
         return;
       }
@@ -82,47 +80,40 @@ export default function ProfileHeader({
       const profileSubscribers = profileDataSnap.subscribers || [];
 
       if (isSubscribed) {
-        // ✅ DEIXAR DE SEGUIR
+        // Unsubscribe
         const newSubscriptions = currentSubscriptions.filter(
           (id) => id !== profileId
         );
-        await updateDoc(userRef, {
-          subscriptions: newSubscriptions,
-        });
+        await updateDoc(userRef, { subscriptions: newSubscriptions });
 
         const newSubscribers = profileSubscribers.filter(
           (id) => id !== currentUserId
         );
-        await updateDoc(profileRef, {
-          subscribers: newSubscribers,
-        });
+        await updateDoc(profileRef, { subscribers: newSubscribers });
 
-        console.log("Deixou de seguir com sucesso");
+        console.log("Unsubscribed successfully");
       } else {
-        // ✅ SEGUIR
+        // Subscribe
         if (!currentSubscriptions.includes(profileId)) {
-          const newSubscriptions = [...currentSubscriptions, profileId];
           await updateDoc(userRef, {
-            subscriptions: newSubscriptions,
+            subscriptions: [...currentSubscriptions, profileId],
           });
         }
 
         if (!profileSubscribers.includes(currentUserId)) {
-          const newSubscribers = [...profileSubscribers, currentUserId];
           await updateDoc(profileRef, {
-            subscribers: newSubscribers,
+            subscribers: [...profileSubscribers, currentUserId],
           });
         }
 
-        console.log("Seguiu com sucesso");
+        console.log("Subscribed successfully");
       }
 
-      // ✅ Atualizar estado local
       onSubscribeClick?.(!isSubscribed);
       setIsSubscribed(!isSubscribed);
     } catch (error) {
-      console.error("Erro ao seguir/deixar de seguir:", error);
-      alert("Erro ao atualizar seguimento: " + error.message);
+      console.error("Error subscribing/unsubscribing:", error);
+      alert("Error updating subscription: " + error.message);
     } finally {
       setIsLoading(false);
     }
@@ -150,17 +141,17 @@ export default function ProfileHeader({
           {profileData.name || profileData.email}
         </h2>
         <p style={{ color: "#666", margin: "5px 0" }}>
-          {profileData.about || "Sem biografia"}
+          {profileData.about || "No bio"}
         </p>
         <small style={{ color: "#999" }}>
-          Membro desde{" "}
+          Member since{" "}
           {profileData.createdAt
             ? new Date(
                 profileData.createdAt.toDate?.() ||
                   profileData.createdAt?.seconds * 1000 ||
                   profileData.createdAt
-              ).toLocaleDateString("pt-BR")
-            : "data desconhecida"}
+              ).toLocaleDateString("en-US")
+            : "unknown date"}
         </small>
 
         <div
@@ -178,7 +169,7 @@ export default function ProfileHeader({
             </div>
           </div>
           <div>
-            <strong>Seguidores</strong>
+            <strong>Subscribers</strong>
             <div style={{ fontSize: 18, fontWeight: "bold" }}>
               {subscribersCount}
             </div>
@@ -195,7 +186,7 @@ export default function ProfileHeader({
               padding: "10px 16px",
             }}
           >
-            ✏️ Editar Perfil
+            ✏️ Edit Profile
           </button>
         ) : (
           <>
@@ -210,7 +201,7 @@ export default function ProfileHeader({
                 cursor: isLoading ? "not-allowed" : "pointer",
               }}
             >
-              {isLoading ? "..." : (isSubscribed ? "❌ Deixar de Seguir" : "✅ Seguir")}
+              {isLoading ? "..." : isSubscribed ? "❌ Unsubscribe" : "✅ Subscribe"}
             </button>
 
             <button
@@ -220,7 +211,7 @@ export default function ProfileHeader({
                 padding: "10px 16px",
               }}
             >
-              💬 Mensagem
+              💬 Message
             </button>
           </>
         )}

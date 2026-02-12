@@ -97,7 +97,7 @@ export function UserProvider({ children }) {
             },
             (err) => {
               console.error(
-                "Erro ao ouvir notificações:",
+                "Error:",
                 err
               );
             }
@@ -122,7 +122,7 @@ export function UserProvider({ children }) {
               setConversations(list);
             },
             (err) => {
-              console.error("Erro ao ouvir conversas:", err);
+              console.error("Error:", err);
             }
           );
 
@@ -145,14 +145,14 @@ export function UserProvider({ children }) {
             },
             (err) => {
               console.error(
-                "Erro ao ouvir lista de seguindo:",
-                err
+                "Error:", err
+                
               );
             }
           );
         } catch (error) {
           console.error(
-            "Erro ao configurar dados do usuário:",
+            "Error:",
             error
           );
         }

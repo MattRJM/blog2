@@ -1,5 +1,5 @@
 /**
- * TopBar.jsx - Barra superior com navegação
+ * TopBar.jsx - Top bar with navigation
  */
 
 import { generateAvatar } from "../../utils/helpers";
@@ -34,10 +34,10 @@ export default function TopBar({
             cursor: "pointer",
           }}
         >
-          👤 Perfil
+          👤 Profile
         </button>
 
-        {/* Notificações */}
+        {/* Notifications */}
         <div style={{ position: "relative" }}>
           <button
             onClick={onNotificationsClick}
@@ -50,7 +50,7 @@ export default function TopBar({
               cursor: "pointer",
             }}
           >
-            🔔 Notificações
+            🔔 Notifications
           </button>
           {unreadCount > 0 && (
             <div
@@ -91,7 +91,7 @@ export default function TopBar({
       </div>
 
       <div>
-        <h3>Olá, {displayName}</h3>
+        <h3>Hello, {displayName}</h3>
         <button
           onClick={onLogout}
           style={{
@@ -103,7 +103,7 @@ export default function TopBar({
             cursor: "pointer",
           }}
         >
-          Sair
+          Logout
         </button>
       </div>
     </div>

@@ -1,5 +1,5 @@
 /**
- * PostForm.jsx - Formulário para criar posts com anexos
+ * PostForm.jsx - Form to create posts with attachments
  */
 
 import { useState } from "react";
@@ -18,9 +18,9 @@ export default function PostForm({ userId, userEmail, onPostCreated }) {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Validar tamanho (máx 1MB para Base64 no Firestore)
+    // Validate size (max 1MB for Base64 in Firestore)
     if (!validateFileSize(file.size, 1)) {
-      setError("Arquivo muito grande (máx 1MB)");
+      setError("File too large (max 1MB)");
       return;
     }
 
@@ -33,20 +33,20 @@ export default function PostForm({ userId, userEmail, onPostCreated }) {
         data: base64,
       });
 
-      // Preview para imagens
+      // Preview for images
       if (file.type.startsWith("image/")) {
         setPreview(base64);
       }
 
       setError("");
     } catch (err) {
-      setError("Erro ao processar arquivo");
+      setError("Error processing file");
     }
   };
 
   const handleSubmit = async () => {
     if (!title.trim() || !content.trim() || !userId) {
-      setError("Preencha título e conteúdo");
+      setError("Fill in title and content");
       return;
     }
 
@@ -68,8 +68,8 @@ export default function PostForm({ userId, userEmail, onPostCreated }) {
       setPreview(null);
       onPostCreated?.();
     } catch (err) {
-      console.error("Erro ao criar post:", err);
-      setError(err.message || "Erro ao publicar post");
+      console.error("Error creating post:", err);
+      setError(err.message || "Error publishing post");
     } finally {
       setIsLoading(false);
     }
@@ -84,7 +84,7 @@ export default function PostForm({ userId, userEmail, onPostCreated }) {
         marginBottom: 20,
       }}
     >
-      <h3>Novo Post</h3>
+      <h3>New Post</h3>
 
       {error && (
         <div
@@ -101,7 +101,7 @@ export default function PostForm({ userId, userEmail, onPostCreated }) {
       )}
 
       <input
-        placeholder="Título"
+        placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         style={styles.input}
@@ -109,7 +109,7 @@ export default function PostForm({ userId, userEmail, onPostCreated }) {
       />
 
       <textarea
-        placeholder="Escreva seu post..."
+        placeholder="Write your post..."
         value={content}
         onChange={(e) => setContent(e.target.value)}
         style={{
@@ -119,10 +119,10 @@ export default function PostForm({ userId, userEmail, onPostCreated }) {
         disabled={isLoading}
       />
 
-      {/* Input de anexo */}
+      {/* Attachment input */}
       <div style={{ marginBottom: 10 }}>
         <label htmlFor="file-input">
-          📎 Anexar arquivo (máx 1MB):
+          📎 Attach file (max 1MB):
         </label>
         <input
           id="file-input"
@@ -134,7 +134,7 @@ export default function PostForm({ userId, userEmail, onPostCreated }) {
         />
       </div>
 
-      {/* Preview da imagem */}
+      {/* Image preview */}
       {preview && (
         <div style={{ marginBottom: 10 }}>
           <img
@@ -158,12 +158,12 @@ export default function PostForm({ userId, userEmail, onPostCreated }) {
               marginRight: 8,
             }}
           >
-            Remover Imagem
+            Remove Image
           </button>
         </div>
       )}
 
-      {/* Info do arquivo */}
+      {/* File info */}
       {attachment && !preview && (
         <div
           style={{
@@ -189,7 +189,7 @@ export default function PostForm({ userId, userEmail, onPostCreated }) {
               cursor: "pointer",
             }}
           >
-            Remover
+            Remove
           </button>
         </div>
       )}
@@ -203,7 +203,7 @@ export default function PostForm({ userId, userEmail, onPostCreated }) {
           cursor: isLoading ? "not-allowed" : "pointer",
         }}
       >
-        {isLoading ? "Publicando..." : "Publicar"}
+        {isLoading ? "Publishing..." : "Publish"}
       </button>
     </div>
   );

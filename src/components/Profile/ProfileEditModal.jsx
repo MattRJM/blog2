@@ -22,7 +22,7 @@ export default function ProfileEditModal({
     if (!file) return;
 
     if (file.size > 1024 * 1024) {
-      setError("Foto deve ter menos de 1MB");
+      setError("Photo must be smaller than 1MB");
       return;
     }
 
@@ -37,7 +37,7 @@ export default function ProfileEditModal({
     setError("");
 
     if (!name.trim()) {
-      setError("Nome é obrigatório");
+      setError("Name is required");
       return;
     }
 
@@ -58,7 +58,7 @@ export default function ProfileEditModal({
 
       onClose();
     } catch (err) {
-      setError(err.message || "Erro ao atualizar perfil");
+      setError(err.message || "Error updating profile");
     } finally {
       setIsLoading(false);
     }
@@ -100,7 +100,7 @@ export default function ProfileEditModal({
             marginBottom: 20,
           }}
         >
-          <h2>Editar Perfil</h2>
+          <h2>Edit Profile</h2>
           <button
             onClick={onClose}
             style={{
@@ -132,7 +132,7 @@ export default function ProfileEditModal({
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: 15 }}>
             <label style={{ display: "block", marginBottom: 5 }}>
-              Foto de Perfil
+              Profile Photo
             </label>
             {photoPreview && (
               <div
@@ -158,7 +158,7 @@ export default function ProfileEditModal({
 
           <div style={{ marginBottom: 15 }}>
             <label style={{ display: "block", marginBottom: 5 }}>
-              Nome
+              Name
             </label>
             <input
               type="text"
@@ -166,13 +166,13 @@ export default function ProfileEditModal({
               onChange={(e) => setName(e.target.value)}
               style={styles.input}
               disabled={isLoading}
-              placeholder="Seu nome"
+              placeholder="Your name"
             />
           </div>
 
           <div style={{ marginBottom: 20 }}>
             <label style={{ display: "block", marginBottom: 5 }}>
-              Biografia
+              Bio
             </label>
             <textarea
               value={about}
@@ -183,7 +183,7 @@ export default function ProfileEditModal({
                 fontFamily: "inherit",
               }}
               disabled={isLoading}
-              placeholder="Conte algo sobre você..."
+              placeholder="Tell something about yourself..."
               maxLength={200}
             />
             <small style={{ color: "#999" }}>
@@ -203,7 +203,7 @@ export default function ProfileEditModal({
               }}
               disabled={isLoading}
             >
-              Cancelar
+              Cancel
             </button>
             <button
               type="submit"
@@ -214,7 +214,7 @@ export default function ProfileEditModal({
               }}
               disabled={isLoading}
             >
-              {isLoading ? "Salvando..." : "Salvar"}
+              {isLoading ? "Saving..." : "Save"}
             </button>
           </div>
         </form>

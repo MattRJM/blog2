@@ -1,5 +1,5 @@
 /**
- * CommentSection.jsx - Seção de comentários do post
+ * CommentSection.jsx - Post comments section
  */
 
 import { useState } from "react";
@@ -10,7 +10,7 @@ export default function CommentSection({
   post,
   currentUserId,
   onCommentAdded,
-  onAuthorClick,  // ← NOVO
+  onAuthorClick, // ← NEW
 }) {
   const [expanded, setExpanded] = useState(false);
   const [commentText, setCommentText] = useState("");
@@ -33,20 +33,20 @@ export default function CommentSection({
     setError("");
 
     try {
-      // Você precisa passar o nome/foto do usuário
-      // Isso deveria vir do contexto ou props
+      // You need to pass the user's name/photo
+      // This should come from context or props
       await addComment({
         postId: post.id,
         userId: currentUserId,
         text: commentText,
-        authorName: "Você",
+        authorName: "You",
         authorPhoto: "",
       });
 
       setCommentText("");
       onCommentAdded?.();
     } catch (err) {
-      console.error("Erro ao adicionar comentário:", err);
+      console.error("Error adding comment:", err);
       setError(err.message);
     } finally {
       setIsLoading(false);
@@ -60,7 +60,7 @@ export default function CommentSection({
       await voteComment(post.id, commentId, voteType, post);
       onCommentAdded?.(); // Refresh
     } catch (err) {
-      console.error("Erro ao votar:", err);
+      console.error("Error voting:", err);
     }
   };
 
@@ -70,7 +70,7 @@ export default function CommentSection({
         style={{ cursor: "pointer", color: "#007bff" }}
         onClick={() => setExpanded(!expanded)}
       >
-        💬 Comentários ({post.comments?.length || 0})
+        💬 Comments ({post.comments?.length || 0})
       </h5>
 
       {expanded && (
@@ -102,7 +102,7 @@ export default function CommentSection({
           )}
 
           <textarea
-            placeholder="Escreva um comentário..."
+            placeholder="Write a comment..."
             value={commentText}
             onChange={(e) => setCommentText(e.target.value)}
             style={{
@@ -133,7 +133,7 @@ export default function CommentSection({
               opacity: isLoading ? 0.6 : 1,
             }}
           >
-            {isLoading ? "Enviando..." : "Comentar"}
+            {isLoading ? "Sending..." : "Comment"}
           </button>
         </>
       )}

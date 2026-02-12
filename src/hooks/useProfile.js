@@ -23,7 +23,7 @@ export function useProfile(userId) {
   }, [userId]);
 
   const updateProfile = useCallback(async (updates) => {
-    if (!userId) throw new Error("User ID obrigatório");
+    if (!userId) throw new Error("Mandatory user ID");
 
     setLoading(true);
     try {
@@ -35,7 +35,7 @@ export function useProfile(userId) {
       setError(null);
       return updated;
     } catch (err) {
-      console.error("Erro ao atualizar perfil:", err);
+      console.error("Error:", err);
       setError(err.message);
       throw err;
     } finally {
@@ -45,7 +45,7 @@ export function useProfile(userId) {
 
   const toggleSubscribe = useCallback(
     async (profileUserId, isCurrentlySubscribed) => {
-      if (!userId) throw new Error("User ID obrigatório");
+      if (!userId) throw new Error("Mandatory user ID");
 
       try {
         const newSubscribers =
@@ -62,7 +62,7 @@ export function useProfile(userId) {
         
         return newSubscribers;
       } catch (err) {
-        console.error("Erro ao toggle subscribe:", err);
+        console.error("Error:", err);
         throw err;
       }
     },

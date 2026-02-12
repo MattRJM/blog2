@@ -57,7 +57,7 @@ export const findOrCreateConversation = async (
 
     return { id: convRef.id, members };
   } catch (error) {
-    console.error("Erro ao encontrar/criar conversa:", error);
+    console.error("Error:", error);
     return null;
   }
 };

@@ -42,7 +42,7 @@ export const loginUser = async (email, password) => {
     await createUserInFirestore(userCredential.user);
     return userCredential.user;
   } catch (error) {
-    throw new Error(error.message || "Erro ao fazer login");
+    throw new Error(error.message || "Error on login");
   }
 };
 
@@ -53,7 +53,7 @@ export const logoutUser = async () => {
   try {
     await signOut(auth);
   } catch (error) {
-    throw new Error(error.message || "Erro ao fazer logout");
+    throw new Error(error.message || "Error on logout");
   }
 };
 
@@ -78,7 +78,7 @@ export const createUserInFirestore = async (user) => {
       });
     }
   } catch (error) {
-    console.error("Erro ao criar usuário no Firestore:", error);
+    console.error("Error:", error);
   }
 };
 
@@ -94,7 +94,7 @@ export const getCurrentUserData = async (userId) => {
 
     return userSnap.exists() ? { uid: userId, ...userSnap.data() } : null;
   } catch (error) {
-    console.error("Erro ao buscar dados do usuário:", error);
+    console.error("Error:", error);
     return null;
   }
 };

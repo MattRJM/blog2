@@ -1,5 +1,5 @@
 /**
- * PostCard.jsx - Cartão individual de post - COMPLETO
+ * PostCard.jsx - Individual post card - FULL
  */
 
 import { useState } from "react";
@@ -27,7 +27,7 @@ export default function PostCard({
     try {
       const success = await likePost(post.id, currentUserId);
       if (!success) {
-        setError("Você já curtiu este post");
+        setError("You have already liked this post");
       }
     } catch (err) {
       setError(err.message);
@@ -37,7 +37,7 @@ export default function PostCard({
   };
 
   const handleDelete = async () => {
-    if (!window.confirm("Tem certeza que deseja apagar este post?"))
+    if (!window.confirm("Are you sure you want to delete this post?"))
       return;
 
     try {
@@ -63,13 +63,13 @@ export default function PostCard({
             fontSize: 18,
             cursor: "pointer",
           }}
-          title="Deletar post"
+          title="Delete post"
         >
           🗑️
         </button>
       )}
 
-      {/* ✅ Dados completos do autor */}
+      {/* ✅ Full author data */}
       <div
         onClick={() => {
           const authorData = post.authorData || {
@@ -96,7 +96,7 @@ export default function PostCard({
           50
         )}
         <div>
-          {/* ✅ Nome clicável */}
+          {/* ✅ Clickable name */}
           <strong
             onClick={(e) => {
               e.stopPropagation();
@@ -119,11 +119,9 @@ export default function PostCard({
             {post.authorName || post.authorEmail}
           </strong>
 
-          {/* ✅ NOVO: Data do post + Membro desde */}
+          {/* ✅ NEW: Post date + Member since */}
           <div style={{ fontSize: 12, color: "#999" }}>
             {formatDate(post.createdAt)}
-
-            
           </div>
         </div>
       </div>
@@ -133,7 +131,7 @@ export default function PostCard({
         {linkify(post.content)}
       </p>
 
-      {/* Anexo */}
+      {/* Attachment */}
       {post.attachment && (
         <div
           style={{
@@ -147,7 +145,7 @@ export default function PostCard({
           {post.attachment.type.startsWith("image/") ? (
             <img
               src={post.attachment.data}
-              alt="anexo"
+              alt="attachment"
               style={{
                 maxWidth: "100%",
                 maxHeight: 300,
@@ -192,13 +190,13 @@ export default function PostCard({
           opacity: isLiking ? 0.6 : 1,
         }}
       >
-        ❤️ Curtir
+        ❤️ Like
       </button>
       <span style={{ marginLeft: 10, fontSize: 14, color: "#666" }}>
-        {post.likes || 0} curtidas
+        {post.likes || 0} likes
       </span>
 
-      {/* ✅ Passa onAuthorClick */}
+      {/* ✅ Pass onAuthorClick */}
       <CommentSection 
         post={post} 
         currentUserId={currentUserId} 

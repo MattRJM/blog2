@@ -16,22 +16,22 @@ export default function RegisterForm() {
     setError("");
 
     if (!email.trim() || !password.trim()) {
-      setError("Email e senha são obrigatórios");
+      setError("Email and password are required");
       return;
     }
 
     if (!isValidEmail(email)) {
-      setError("Email inválido");
+      setError("Invalid email");
       return;
     }
 
     if (password.length < 6) {
-      setError("Senha deve ter pelo menos 6 caracteres");
+      setError("Password must be at least 6 characters");
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("Senhas não coincidem");
+      setError("Passwords do not match");
       return;
     }
 
@@ -40,7 +40,7 @@ export default function RegisterForm() {
     try {
       await register(email, password);
     } catch (err) {
-      setError(err.message || "Erro ao registrar");
+      setError(err.message || "Error while registering");
     } finally {
       setIsLoading(false);
     }
@@ -48,7 +48,7 @@ export default function RegisterForm() {
 
   return (
     <form onSubmit={handleSubmit} style={{ maxWidth: 400 }}>
-      <h2>Cadastro</h2>
+      <h2>Sign Up</h2>
 
       {error && (
         <div
@@ -75,7 +75,7 @@ export default function RegisterForm() {
 
       <input
         type="password"
-        placeholder="Senha"
+        placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         style={styles.input}
@@ -84,7 +84,7 @@ export default function RegisterForm() {
 
       <input
         type="password"
-        placeholder="Confirmar Senha"
+        placeholder="Confirm Password"
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
         style={styles.input}
@@ -101,7 +101,7 @@ export default function RegisterForm() {
         }}
         disabled={isLoading}
       >
-        {isLoading ? "Cadastrando..." : "Cadastrar"}
+        {isLoading ? "Signing up..." : "Sign Up"}
       </button>
     </form>
   );

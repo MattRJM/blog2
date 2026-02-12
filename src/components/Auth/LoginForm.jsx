@@ -15,17 +15,17 @@ export default function LoginForm() {
     setError("");
 
     if (!email.trim() || !password.trim()) {
-      setError("Email e senha são obrigatórios");
+      setError("Email and password are required");
       return;
     }
 
     if (!isValidEmail(email)) {
-      setError("Email inválido");
+      setError("Invalid email");
       return;
     }
 
     if (password.length < 6) {
-      setError("Senha deve ter pelo menos 6 caracteres");
+      setError("Password must be at least 6 characters");
       return;
     }
 
@@ -34,7 +34,7 @@ export default function LoginForm() {
     try {
       await login(email, password);
     } catch (err) {
-      setError(err.message || "Erro ao fazer login");
+      setError(err.message || "Error while logging in");
     } finally {
       setIsLoading(false);
     }
@@ -42,7 +42,7 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit} style={{ maxWidth: 400 }}>
-      <h2>Entrar</h2>
+      <h2>Sign In</h2>
 
       {error && (
         <div
@@ -69,7 +69,7 @@ export default function LoginForm() {
 
       <input
         type="password"
-        placeholder="Senha"
+        placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         style={styles.input}
@@ -86,7 +86,7 @@ export default function LoginForm() {
         }}
         disabled={isLoading}
       >
-        {isLoading ? "Entrando..." : "Entrar"}
+        {isLoading ? "Signing in..." : "Sign In"}
       </button>
     </form>
   );

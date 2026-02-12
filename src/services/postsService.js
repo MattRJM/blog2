@@ -25,7 +25,7 @@ export const createPost = async ({
   attachment = null,
 }) => {
   if (!title || !content || !authorId) {
-    throw new Error("Título, conteúdo e ID do autor são obrigatórios");
+    throw new Error("Title, content and author ID are required");
   }
 
   try {

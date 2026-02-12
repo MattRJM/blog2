@@ -75,7 +75,7 @@ export default function FollowingList({
       setUnsubscribers(newUnsubscribers);
       setLoading(false);
     } catch (err) {
-      console.error("Erro ao buscar lista de seguindo:", err);
+      console.error("Error:", err);
       setLoading(false);
     }
 
@@ -193,7 +193,7 @@ export default function FollowingList({
                 fontSize: 14,
                 padding: 4,
               }}
-              title="Enviar mensagem"
+              title="Send message"
             >
               💬
             </button>
