@@ -10,7 +10,6 @@ export default function ProfileEditModal({
 }) {
   const [name, setName] = useState(profile?.name || "");
   const [about, setAbout] = useState(profile?.about || "");
-  const [photoFile, setPhotoFile] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(
     profile?.photoURL || null
   );

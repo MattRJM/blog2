@@ -2,7 +2,6 @@
  * TopBar.jsx - Top bar with navigation
  */
 
-import { generateAvatar } from "../../utils/helpers";
 
 export default function TopBar({
   displayName,

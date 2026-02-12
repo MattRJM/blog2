@@ -83,7 +83,7 @@ export default function FollowingList({
     return () => {
       Object.values(unsubscribers).forEach((unsub) => unsub?.());
     };
-  }, [followingList]);
+  }, [followingList, unsubscribers]);
 
   if (loading && followingUsers.length === 0) {
     return (
